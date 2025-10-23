@@ -1,48 +1,67 @@
 import { ReactLenis } from "lenis/react";
 import { useTransform, motion, useScroll } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import pfe from "@/assets/images/incidentm/pfe.png";
+import powerbi from "@/assets/images/incidentm/powerbi.png";
+import chatagent from "@/assets/images/incidentm/chatagent.png";
+import searchbyname from "@/assets/images/incidentm/searchbyname.png";
+import teampage from "@/assets/images/incidentm/teampage.png";
+import home from "@/assets/images/coconsult/home.png";
+import proj from "@/assets/images/coconsult/projects.jpg";
+import login from "@/assets/images/coconsult/login.jpg";
+
+import bill from "@/assets/images/coconsult/bill.jpg";
+import { FaCogs } from "react-icons/fa";
+
+import homeshop from "@/assets/images/yshop/home.jpg";
+
+import panier from "@/assets/images/yshop/panier.jpg";
+
+import produit from "@/assets/images/yshop/produit.jpg";
+
+import first from "@/assets/images/F2K/first.jpg";
+
+import second from "@/assets/images/F2K/second.jpg";
+
+import third from "@/assets/images/F2K/third.jpg";
+import fourth from "@/assets/images/F2K/fourth.jpg";
+
+
 
 const projects = [
   {
-    title: "Olova! A Lightweight JavaScript Library",
+    title: "Client Portal 🚀 An Incident Management Platform",
     description:
-      "A lightweight JavaScript library for creating beautiful, responsive UI components.",
-    src: "rock.jpg",
-    link: "https://i.postimg.cc/DwgWTfP0/Annotation-2025-03-19-113338.png",
+      "Developed an integrated incident management platform connected with Microsoft Dynamics CRM, streamlining service operations through automated workflows, SLA tracking, and multi-level escalation processes. Designed and implemented real-time Power BI dashboards to monitor performance metrics and enhance decision-making.",
+    images: [pfe, powerbi, chatagent, searchbyname, teampage],
     color: "#5196fd",
-    githubLink: "https://github.com/olovajs/olova",
-    liveLink: "https://olova.js.org/",
+    technologies: [".NET", "Next.js", "Dynamics 365", "Power BI"],
   },
   {
-    title: "A sleek portfolio built with React and Tailwind CSS ",
+    title: "CoConsult",
     description:
-      "A sleek portfolio built with React and Tailwind CSS to showcase your skills, projects, and experience in a modern design.",
-    src: "tree.jpg",
-    link: "https://i.postimg.cc/J75CKyrs/Annotation-2025-04-01-203959.png",
+      "Designed and developed a tailored ERP solution for small and medium-sized enterprises, focusing on scalability and modular architecture. The platform integrates core business processes — including finance, HR, and inventory management — within a unified system. Implemented a robust CI/CD pipeline to ensure seamless deployment, automated testing, and continuous integration across all services, enhancing development efficiency and system reliability.",
+    images: [login, home, proj, bill],
     color: "#8f89ff",
-    githubLink: "https://github.com/seraprogrammer/portfolio",
-    liveLink: "https://codervai.vercel.app",
+    technologies: ["Springboot", "Angular", "Devops"],
   },
   {
-    title: "🚀 CodeWhisperer",
+    title: "🚀YShop – Sports Nutrition E-Shop",
     description:
-      "🚀 CodeWhisperer A powerful online code editor built with React and Tailwind CSS. Featuring real-time code execution, syntax highlighting, multi-language support, and a sleek UI. Start coding instantly! 💻✨",
-    src: "water.jpg",
-    link: "https://i.postimg.cc/J4jPVFY0/Annotation-2025-04-01-204723.png",
+      "🚀 YShop is an e-shop for sports nutrition products.It allows users to browse, filter, and purchase supplements with a modern, responsive interface.💻✨",
+    images: [homeshop, produit, panier],
     color: "#fff",
-    githubLink: "https://github.com/seraprogrammer/codewhisperer",
-    liveLink: "https://codewhisperer.vercel.app/",
+    technologies: ["Springboot", "React"],
   },
   {
-    title: "CodeKori 🔥",
+    title: "F2K - Official Website for French Company 🔥",
     description:
-      "CodeKori is a powerful online code editor built with React and Tailwind CSS. Featuring real-time code execution, syntax highlighting, multi-language support, and a sleek UI. Start coding instantly! 💻✨",
-    src: "house.jpg",
-    link: "https://i.postimg.cc/cHQr4fpR/Annotation-2025-04-01-205350.png",
+      " Designed and developed the official website for F2K, enhancing client visibility and brand presence.💻✨",
+    images: [first, second, third, fourth],
     color: "#ed649e",
-    githubLink: "https://github.com/seraprogrammer/CodeKori",
-    liveLink: "https://codekori.js.org",
+    technologies: ["Angular"],
+
   },
 ];
 
@@ -102,21 +121,23 @@ export default function Projects() {
       <main className="bg-black" ref={container}>
         <section className="text-white w-full bg-slate-950">
           {projects.map((project, i) => {
-            const targetScale = 1 - (projects.length - i) * 0.05;
+             const targetScale = 0.97; 
+
             return (
               <Card
                 key={`p_${i}`}
                 i={i}
-                url={project.link}
+                images={project.images}
                 title={project.title}
                 color={project.color}
                 description={project.description}
                 progress={scrollYProgress}
                 range={[i * 0.25, 1]}
                 targetScale={targetScale}
-                githubLink={project.githubLink}
+                technologies={project.technologies ?? []}   // ✅ add this
                 liveLink={project.liveLink}
               />
+
             );
           })}
         </section>
@@ -129,17 +150,26 @@ function Card({
   i,
   title,
   description,
-  url,
+  images,
   color,
   progress,
   range,
   targetScale,
-  githubLink,
+  technologies = [],
   liveLink,
 }) {
   const container = useRef(null);
-  const scale = useTransform(progress, range, [1, targetScale]);
+  const [index, setIndex] = useState(0);
+ 
+  const scale = useTransform(progress, range, [targetScale, 1]);
+  const prev = () => setIndex((p) => (p === 0 ? images.length - 1 : p - 1));
+  const next = () => setIndex((p) => (p === images.length - 1 ? 0 : p + 1));
 
+  // drag threshold (px) to change slide
+  const onDragEnd = (_e, info) => {
+    if (info.offset.x > 80) prev();
+    else if (info.offset.x < -80) next();
+  };
   return (
     <div
       ref={container}
@@ -153,40 +183,81 @@ function Card({
           marginTop: "var(--project-margin, 0)",
         }}
         className="relative -top-[25%] h-auto w-[90%] md:w-[85%] lg:w-[75%] xl:w-[65%] origin-top project-card"
-        whileHover={{
-          y: -8,
-          transition: { duration: 0.3 },
-        }}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
       >
-        {/* Modern split card design */}
         <div className="w-full flex flex-col md:flex-row bg-zinc-900 rounded-2xl overflow-hidden shadow-xl">
-          {/* Image section - full width on mobile, 55% on desktop */}
-          <div className="w-full md:w-[55%] h-[250px] md:h-[400px] lg:h-[450px] relative overflow-hidden">
-            <motion.img
-              src={url}
-              alt={title}
-              className="w-full h-full object-cover"
-              initial={{ scale: 1 }}
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.4 }}
-            />
+          {/* IMAGE / CAROUSEL */}
+          {/* IMAGE / CAROUSEL */}
+          <div className="w-full md:w-[55%] relative overflow-hidden flex items-center justify-center bg-black">
+            {/* Slide track */}
+            <motion.div
+              className="flex transition-transform ease-in-out duration-500"
+              style={{ transform: `translateX(-${index * 100}%)` }}
+            >
+              {images.map((src, idx) => (
+                <motion.div
+                  key={idx}
+                  className="w-full flex-shrink-0 flex items-center justify-center bg-black"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  onDragEnd={onDragEnd}
+                >
+                  <img
+                    src={src}
+                    alt={`${title} ${idx + 1}`}
+                    className="max-w-full max-h-[450px] md:max-h-[500px] object-contain rounded-none"
+                    draggable={false}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
 
             {/* Colored overlay on hover */}
             <motion.div
-              className="absolute inset-0"
+              className="absolute inset-0 pointer-events-none"
               style={{ backgroundColor: color, mixBlendMode: "overlay" }}
               initial={{ opacity: 0 }}
-              whileHover={{ opacity: 0.3 }}
+              whileHover={{ opacity: 0.2 }}
               transition={{ duration: 0.3 }}
             />
 
             {/* Project number */}
-            <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-black/50 backdrop-blur-md text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium">
+            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium">
               Project {i + 1}
+            </div>
+
+            {/* Controls */}
+            <button
+              onClick={prev}
+              aria-label="Previous image"
+              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/60 hover:bg-black/80 px-3 py-2 backdrop-blur text-white"
+            >
+              ‹
+            </button>
+            <button
+              onClick={next}
+              aria-label="Next image"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/60 hover:bg-black/80 px-3 py-2 backdrop-blur text-white"
+            >
+              ›
+            </button>
+
+            {/* Dots */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+              {images.map((_, d) => (
+                <button
+                  key={d}
+                  onClick={() => setIndex(d)}
+                  aria-label={`Go to slide ${d + 1}`}
+                  className={`h-2.5 w-2.5 rounded-full transition-all ${d === index ? "bg-white" : "bg-white/40"
+                    }`}
+                />
+              ))}
             </div>
           </div>
 
-          {/* Content section - full width on mobile, 45% on desktop */}
+
+          {/* CONTENT */}
           <div className="w-full md:w-[45%] p-6 md:p-8 lg:p-10 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-3 mb-4 md:mb-6">
@@ -205,73 +276,26 @@ function Card({
               </p>
             </div>
 
-            <div className="mt-4 md:mt-auto pt-4">
-              <div className="w-full h-[1px] bg-gray-800 mb-4 md:mb-6" />
+   <div className="mt-3">
+  <div className="flex items-center gap-2 mb-1">
+    <FaCogs className="text-emerald-400" />
+    <span className="text-white/90 font-semibold">Technologies :</span>
+  </div>
 
-              <div className="flex items-center gap-4">
-                {/* GitHub Link */}
-                <motion.a
-                  href={githubLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-2"
-                  whileHover={{ y: -3 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                  </svg>
-                  <span
-                    className="text-xs md:text-sm font-medium"
-                    style={{ color }}
-                  >
-                    Code
-                  </span>
-                </motion.a>
+  <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs md:text-sm font-medium text-gray-300">
+    {technologies.map((t, i) => (
+      <span key={t + i} className="whitespace-nowrap">
+        {t}
+        {i < technologies.length - 1 && (
+          <span className="mx-1 text-gray-600">•</span>
+        )}
+      </span>
+    ))}
+  </div>
+</div>
 
-                {/* Live Link */}
-                <motion.a
-                  href={liveLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-2"
-                  whileHover={{ y: -3 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                  </svg>
-                  <span
-                    className="text-xs md:text-sm font-medium"
-                    style={{ color }}
-                  >
-                    Live
-                  </span>
-                </motion.a>
-              </div>
-            </div>
+
+
           </div>
         </div>
       </motion.div>
@@ -284,11 +308,11 @@ Card.propTypes = {
   i: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
+  images: PropTypes.arrayOf(PropTypes.string).isRequired, // changed
   color: PropTypes.string.isRequired,
   progress: PropTypes.object.isRequired,
   range: PropTypes.array.isRequired,
   targetScale: PropTypes.number.isRequired,
-  githubLink: PropTypes.string.isRequired,
+  technologies: PropTypes.arrayOf(PropTypes.string),
   liveLink: PropTypes.string.isRequired,
 };

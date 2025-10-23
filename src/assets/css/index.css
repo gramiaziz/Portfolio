@@ -200,13 +200,9 @@ pre[class*="language-"] {
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+@layer base{
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
 }
 /* Add these classes to adjust the grid colors in the top-left and bottom-right */
 .top-left-grid {

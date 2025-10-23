@@ -29,12 +29,7 @@ export default function Header() {
   const navLinks = [
     { id: "home", icon: FaHome, text: "Home", path: "/" },
     { id: "skills", icon: FaCode, text: "Skills", path: "/skills" },
-    {
-      id: "experience",
-      icon: FaBriefcase,
-      text: "Experience",
-      path: "/experience",
-    },
+    
     {
       id: "education",
       icon: FaGraduationCap,
@@ -42,6 +37,12 @@ export default function Header() {
       path: "/education",
     },
     { id: "projects", icon: FaLaptopCode, text: "Projects", path: "/projects" },
+    {
+      id: "internships",
+      icon: FaBriefcase,
+      text: "Internships",
+      path: "/internships",
+    },
     { id: "contact", icon: FaEnvelope, text: "Contact", path: "/contact" },
   ];
 

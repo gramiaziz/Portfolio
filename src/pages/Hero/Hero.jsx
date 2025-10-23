@@ -6,8 +6,12 @@ import Meteors from "@/components/ui/meteors";
 import PortfolioPage from "@/pages/About/About";
 import SparklesText from "@/components/ui/sparkles-text";
 import { FlipWords } from "@/components/ui/flip-words";
+import { FaFileDownload, FaChevronDown } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRef } from "react"; 
 
-// Grid Background - Replacing the HexagonBackground
+
+
 const GridBackground = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
@@ -41,37 +45,59 @@ const GridBackground = () => {
 };
 
 export default function Hero() {
+ const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const [isTargetResolution, setIsTargetResolution] = useState(false);
+
+ const handleDownload = (lang) => {
+    const file = lang === "fr" ? "/cvfr.pdf" : "/cvenglish.pdf";
+    const link = document.createElement("a");
+    link.href = file;
+    link.download = lang === "fr" ? "MohamedAzizGrami.pdf" : "MohamedAzizGrami.pdf";
+    link.click();
+    setOpen(false);
+  };
+
+
   const words = [
-    "Full-Stack Developer & UI/UX Enthusiast",
-    "JavaScript Developer & Creator of Olova.js",
-    "Learning MARN Stack",
-    "Linux & GitHub for DevOps Enthusiast",
+    "Software Engineer",
+    "Full-Stack Developer"
   ];
 
   const [code] = useState(`
 const profile = {
-    name: 'Nazmul Hossain',
-    title: 'Full-Stack Developer | Cloud Enthusiast | Problem Solver',
+    name: 'Grami Mohamed Aziz',
+    title: 'Full-Stack Developer | Software Engineer | Problem Solver',
     skills: [
-        'React', 'NextJS', 'Redux', 'Express',
-        'MySQL', 'MongoDB', 'Docker', 'AWS', 'TypeScript',
-        'GraphQL', 'Git', 'Linux', 'Discord Development'
+        'React', 'NextJS', '.Net', 'SpringBoot',
+        'MySQL', 'Symfony', 'Docker', 'AWS', 'Angular',
+        'Dynamics365', 'Git', 'Linux', 'PowerBI'
     ],
     hardWorker: true,
     quickLearner: true,
     problemSolver: true,
-    yearsOfExperience: 4, 
     hireable: function() {
         return (
             this.hardWorker &&
             this.problemSolver &&
-            this.skills.length >= 5 &&
-            this.yearsOfExperience >= 3
+            this.quickLearner &&
+            this.skills.length >= 7
         );
     }
 };
   `);
 
+  useEffect(() => {
+    const onClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+
+  
   useEffect(() => {
     Prism.highlightAll();
 
@@ -107,7 +133,7 @@ const profile = {
     document.head.appendChild(style);
 
     // Apply extra padding for 1366x768 resolution
-    const checkResolution = () => {
+         const checkResolution = () => {
       const isTargetResolution =
         window.innerWidth >= 1360 &&
         window.innerWidth <= 1370 &&
@@ -190,7 +216,7 @@ const profile = {
                     I&apos;m
                     <span className="typing-effect gradient-text">
                       {" "}
-                      Nazmul Hossain
+                      Grami Mohamed Aziz
                     </span>
                   </span>
                 </h1>
@@ -211,7 +237,7 @@ const profile = {
               {/* Description */}
               <div className="relative mb-8 sm:mb-12 max-w-xl">
                 <p className="text-base sm:text-xl text-gray-300/90 leading-relaxed">
-                  JavaScript lover 🚀 | OlovaJS creator 🔧 | Crafting frameworks
+                   Freshly graduated Software Engineering student 🚀 | Crafting frameworks
                   and coding the future 💻✨
                 </p>
               </div>
@@ -220,29 +246,63 @@ const profile = {
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 animate__animated animate__fadeInUp animate__delay-2s">
                 {/* View Projects Button */}
                 <a
-                  href="https://github.com/seraprogrammer"
+                  href="https://www.linkedin.com/in/mohamed-aziz-grami-520620276"
                   className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-teal-400 p-0.5 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_2rem_-0.5rem_#60A5FA]"
                 >
                   <span className="block w-full px-6 sm:px-8 py-3 sm:py-4 rounded-[11px] bg-gray-900 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-teal-400">
                     <span className="relative flex items-center justify-center gap-2 text-white font-medium">
-                      <span>Learn More</span>
+                      <span>Linkedin</span>
                       <i className="fas fa-arrow-right transform transition-all duration-300 group-hover:translate-x-1"></i>
                     </span>
                   </span>
                 </a>
 
                 {/* Contact Button */}
-                <a
-                  href="#"
-                  className="group relative inline-flex items-center justify-center gap-3 p-0.5 rounded-xl bg-gradient-to-r from-gray-800 to-gray-700 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_2rem_-0.5rem_#60A5FA]"
-                >
-                  <span className="block w-full px-6 sm:px-8 py-3 sm:py-4 rounded-[11px] bg-gray-900 border border-gray-700/50 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-700">
-                    <span className="relative flex items-center justify-center gap-2 text-gray-300 font-medium group-hover:text-white">
-                      <span>Get Resume</span>
-                      <i className="fas fa-envelope transform transition-all duration-300 group-hover:rotate-12"></i>
-                    </span>
-                  </span>
-                </a>
+               {/* Contact / Get Resume with language chooser */}
+<div className="relative inline-block" ref={dropdownRef}>
+  <button
+    type="button"
+    onClick={() => setOpen((v) => !v)}
+    className="group relative inline-flex items-center justify-center gap-3 p-0.5 rounded-xl bg-gradient-to-r from-gray-800 to-gray-700 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_2rem_-0.5rem_#60A5FA]"
+  >
+    <span className="block w-full px-6 sm:px-8 py-3 sm:py-4 rounded-[11px] bg-gray-900 border border-gray-700/50 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-700">
+      <span className="relative flex items-center justify-center gap-2 text-gray-300 font-medium group-hover:text-white">
+        <FaFileDownload className="w-4 h-4 transform transition-transform group-hover:rotate-12" />
+        <span>Get Resume</span>
+        <FaChevronDown
+          className={`w-3 h-3 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        />
+      </span>
+    </span>
+  </button>
+
+  {/* Dropdown */}
+  <AnimatePresence>
+    {open && (
+      <motion.div
+        initial={{ opacity: 0, y: -6 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -6 }}
+        transition={{ duration: 0.16 }}
+        className="absolute left-0 mt-2 min-w-[220px] bg-gray-900 border border-gray-700 rounded-lg shadow-xl overflow-hidden z-20"
+      >
+        <button
+          onClick={() => handleDownload("fr")}
+          className="w-full px-4 py-2 text-left text-gray-300 hover:bg-gray-800 transition-colors flex items-center gap-2"
+        >
+          🇫🇷 French Version
+        </button>
+        <button
+          onClick={() => handleDownload("en")}
+          className="w-full px-4 py-2 text-left text-gray-300 hover:bg-gray-800 transition-colors flex items-center gap-2"
+        >
+          🇬🇧 English Version
+        </button>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
+
               </div>
 
               {/* Floating badges */}

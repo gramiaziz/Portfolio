@@ -15,24 +15,24 @@ const EducationSection = () => {
 
   const educationData = [
     {
-      degree: "Secondary School Certificate (SSC)",
-      school: "Natore Textile Institute",
+      degree: " Preparatory Classes in Physics and Technology",
+      school: "Preparatory Institute for Engineering Studies of El Manar (IPEIEM)",
       mascot: "📘",
-      year: "2019-2021",
-      achievements: ["GPA: 4.89", "Subject: Science"],
-      skills: ["Mathematics", "Physics", "Chemistry", "Biology"],
+      year: "2020-2022",
+      achievements: ["Admitted through the National Engineering Schools Entrance Examination"],
+      skills: ["Mathematics", "Physics", "Chemistry", "technology"],
       description:
-        "Focused on core science subjects with emphasis on practical laboratory work and scientific research methodologies.",
+        "Completed intensive coursework in mathematics, physics, and technology with strong emphasis on problem-solving, logical reasoning, and engineering fundamentals. Gained a solid foundation for higher studies in software and systems engineering.",
     },
     {
-      degree: "Higher Secondary Certificate (HSC)",
-      school: "Dottopara Model Degree College",
+      degree: "Software Engineering",
+      school: " Private Higher School of Engineering and Technology (ESPRIT)",
       mascot: "📗",
-      year: "2021-2023",
-      achievements: ["GPA: 4.25", "Subject: Arts"],
-      skills: ["Literature", "Social Studies", "Economics", "History"],
+      year: "2022-2025",
+      achievements: ["Graduated as Software Engineer"],
+      skills: ["Data structures", "Software design", "System architecture", "Algorithms"],
       description:
-        "Developed strong analytical and critical thinking skills through comprehensive study of humanities and social sciences.",
+        "Completed a comprehensive three-year engineering program covering advanced software design, data structures, algorithms, and system architecture. Gained practical experience in full-stack development, database design, and deployment using modern frameworks. Led and contributed to several academic and professional projects, including a CRM and incident management platform.",
     },
   ];
 
@@ -126,7 +126,7 @@ const EducationSection = () => {
                 <div className="space-y-3">
                   <h4 className="text-sm font-semibold text-white flex items-center gap-2">
                     <Trophy className="w-4 h-4 text-yellow-500" />
-                    Key Achievements
+                    Key Achievement
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {edu.achievements.map((achievement, i) => (
