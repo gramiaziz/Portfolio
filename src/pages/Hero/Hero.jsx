@@ -50,7 +50,7 @@ export default function Hero() {
   const [isTargetResolution, setIsTargetResolution] = useState(false);
 
  const handleDownload = (lang) => {
-    const file = lang === "fr" ? "/cvfr.pdf" : "/cvenglish.pdf";
+    const file = lang === "fr" ? "/Portfolio/cvfr.pdf" : "/Portfolio/cvenglish.pdf";
     const link = document.createElement("a");
     link.href = file;
     link.download = lang === "fr" ? "MohamedAzizGrami.pdf" : "MohamedAzizGrami.pdf";
